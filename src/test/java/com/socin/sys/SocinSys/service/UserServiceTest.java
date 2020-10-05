@@ -16,6 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.socin.sys.SocinSys.exception.AuthenticationError;
 import com.socin.sys.SocinSys.exception.BusinessRulesException;
 import com.socin.sys.SocinSys.model.entity.User;
 import com.socin.sys.SocinSys.model.repository.UserRepository;
@@ -50,6 +51,12 @@ public class UserServiceTest {
 		Assertions.assertThat(result).isNotNull();
 	}
 		
+	@Test(expected = AuthenticationError.class)
+	public void shouldThrowsErrorWhenNotFindRegisteredUser() {
+		Mockito.when(repository.findByEmail(Mockito.anyString())).thenReturn(Optional.empty());
+		service.authenticate("email@email.com", "password");
+	}
+	
 	@Test(expected = Test.None.class)
 	public void validadeEmail() {		
 		Mockito.when(repository.existsByEmail(Mockito.anyString())).thenReturn(false);
