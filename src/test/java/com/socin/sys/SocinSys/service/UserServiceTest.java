@@ -1,5 +1,8 @@
 package com.socin.sys.SocinSys.service;
 
+import java.util.Optional;
+
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,6 +37,17 @@ public class UserServiceTest {
 	public void setUp() {
 		repository = Mockito.mock(UserRepository.class);
 		service = new UserServiceImpl(repository);
+	}
+	
+	@Test
+	public void shouldAuthenticateUser() {
+		String email = "email@email.com";
+		String password = "123";
+		
+		User user = User.builder().email(email).password(password).id(1l).build();
+		Mockito.when(repository.findByEmail(email)).thenReturn(Optional.of(user));
+		User result = service.authenticate(email, password);
+		Assertions.assertThat(result).isNotNull();
 	}
 		
 	@Test(expected = Test.None.class)
