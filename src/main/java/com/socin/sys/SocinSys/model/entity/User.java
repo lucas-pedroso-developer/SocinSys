@@ -1,5 +1,7 @@
 package com.socin.sys.SocinSys.model.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,7 +35,7 @@ public class User {
 	
 	@Column(name = "age")
 	@Setter
-	private String age;
+	private Integer age;
 	
 	@Column(name = "email")
 	@Setter
@@ -46,10 +48,5 @@ public class User {
 	@Column(name = "job")
 	@Setter
 	private String job;
-	
-	@Column(name = "register_date")
-	@Setter
-	private String register_date;
-	
 	
 }
