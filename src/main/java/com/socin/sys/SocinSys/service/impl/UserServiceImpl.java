@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		if(!user.get().getPassword().equals(password)) {
-			throw new AuthenticationError("Senha inválida!");
+			throw new AuthenticationError("Senha inválida");
 		}
 		return user.get();
 	}
