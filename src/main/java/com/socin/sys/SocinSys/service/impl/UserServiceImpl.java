@@ -1,5 +1,6 @@
 package com.socin.sys.SocinSys.service.impl;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,46 @@ public class UserServiceImpl implements UserService {
 			throw new BusinessRulesException("Já existe um usuário cadastrado com esse email!");
 		}
 		
+	}
+	
+	@Override
+	public Optional<User> getUserById(long id) {
+		return repository.findById(id);
+	}
+
+	@Override
+	@Transactional
+	public User update(User user) {
+		Objects.requireNonNull(user.getId());
+		validate(user);
+		return repository.save(user);
+	}
+
+	@Override
+	@Transactional
+	public void delete(User user) {
+		Objects.requireNonNull(user.getId());
+		repository.delete(user);
+		
+	}
+	
+	@Override
+	public void validate(User user) {
+		if(user.getEmail() == null || user.getEmail().trim().equals("")) {
+			throw new BusinessRulesException("informe um email válido");
+		}
+		
+		if(user.getJob() == null) {
+			throw new BusinessRulesException("Informe uma profissão válida");
+		}
+		
+		if(user.getAge() == null) {
+			throw new BusinessRulesException("Informe uma idade válida");
+		}
+		
+		if(user.getName() == null) {
+			throw new BusinessRulesException("Informe um nome válido");
+		}		
 	}
 
 }

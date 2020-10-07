@@ -37,6 +37,7 @@ public class UserServiceTest {
 	UserRepository repository;
 	
 	
+	
 	@Test
 	public void shouldSaveUser() {
 		Mockito.doNothing().when(service).validateEmail(Mockito.anyString());

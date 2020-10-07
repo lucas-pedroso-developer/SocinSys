@@ -2,6 +2,8 @@ package com.socin.sys.SocinSys;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 public class SocinSysApplication {
@@ -10,5 +12,10 @@ public class SocinSysApplication {
 		SpringApplication.run(SocinSysApplication.class, args);
 	}
 
+	@Bean
+	public RestTemplate restTemplate() {
+	    return new RestTemplate();
+	}
+	
 }
  
