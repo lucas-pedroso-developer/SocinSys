@@ -22,10 +22,10 @@ public class UserServiceImpl implements UserService {
 	public UserServiceImpl(UserRepository repository) {
 		super();
 		this.repository = repository;
-	}
+	}		
 
 	@Override
-	public User authenticate(String email, String password) {
+	public User authenticate(String email, String password) {		
 		Optional<User> user = repository.findByEmail(email);
 		if(!user.isPresent()) {
 			throw new AuthenticationError("Usuário não encontrado!");
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 		}
 		return user.get();
 	}
-
+	
 	@Override
 	@Transactional
 	public User saveUser(User user) {

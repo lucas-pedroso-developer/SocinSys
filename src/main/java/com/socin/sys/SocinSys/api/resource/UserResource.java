@@ -17,14 +17,23 @@ import com.socin.sys.SocinSys.exception.BusinessRulesException;
 import com.socin.sys.SocinSys.model.entity.User;
 import com.socin.sys.SocinSys.service.UserService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserResource {
 	
-	private UserService service;
-	
-	public UserResource(UserService service) {
-		this.service = service;
+	private final UserService service;
+		
+	@PostMapping("/authenticate")
+	public ResponseEntity authenticate(@RequestBody UserDTO dto) {
+		try {			
+			User authenticatedUser = service.authenticate(dto.getEmail(), dto.getPassword());			
+			return ResponseEntity.ok(authenticatedUser);			
+		} catch(AuthenticationError e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 	
 	@PostMapping
@@ -59,17 +68,7 @@ public class UserResource {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}).orElseGet(() -> new ResponseEntity("Usuário não encontrado na base de Dados", HttpStatus.BAD_REQUEST) );
 	}
-
-	@PostMapping("/authenticate")
-	public ResponseEntity authenticate(@RequestBody UserDTO dto) {
-		try {
-			User authenticatedUser = service.authenticate(dto.getEmail(), dto.getPassword());
-			return new ResponseEntity(authenticatedUser, HttpStatus.CREATED);
-		} catch(AuthenticationError e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
-	}
-	
+			
 	private User convert(UserDTO dto) {
 		User user = new User();
 		user.setId(dto.getId());		
