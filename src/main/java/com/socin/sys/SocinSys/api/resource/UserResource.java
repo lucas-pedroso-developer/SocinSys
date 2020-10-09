@@ -26,6 +26,13 @@ public class UserResource {
 	
 	private final UserService service;
 		
+	@GetMapping("{id}")
+	public ResponseEntity getUserById(@PathVariable("id") Long id) {
+		return service.getUserById(id)
+				.map(user -> new ResponseEntity(convertDTO(user), HttpStatus.OK))
+				.orElseGet(() -> new ResponseEntity(HttpStatus.NOT_FOUND));
+	}
+	
 	@PostMapping("/authenticate")
 	public ResponseEntity authenticate(@RequestBody UserDTO dto) {
 		try {			
@@ -78,6 +85,17 @@ public class UserResource {
 		user.setJob(dto.getJob());
 		user.setPassword(dto.getPassword());
 		return user;
+	}
+	
+	private UserDTO convertDTO(User user) {
+		return UserDTO.builder()	
+				.id(user.getId())
+				.name(user.getName())
+				.age(user.getAge())
+				.email(user.getEmail())
+				.job(user.getJob())
+				.password(user.getPassword())				
+				.build();		
 	}
 	
 }

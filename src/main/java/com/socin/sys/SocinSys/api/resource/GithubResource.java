@@ -12,6 +12,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,16 +31,14 @@ public class GithubResource {
 		
    @Autowired
    RestTemplate restTemplate;
-   
-   @RequestMapping(value = "/github-users/{page}", method = RequestMethod.GET)
-   public ResponseEntity<GitHubUser[]> getGithubUsers(@PathVariable Integer page) {
+ 
+   @GetMapping(value = "/github-users/{page}")
+   public ResponseEntity<GitHubUser[]> getGithubUsers(@PathVariable("page") String page) {
 	   ResponseEntity<GitHubUser[]> response =
 			   restTemplate.getForEntity(
-			   "https://api.github.com/users?page=" + page, //+ "&per_page=2",
+			   "https://api.github.com/users?since=" + page,
 			   GitHubUser[].class);
 	   GitHubUser[] gitHubUsers = response.getBody();	   
-	   System.out.print("page");
-	   System.out.print("https://api.github.com/users?page=" + page);
 	   return new ResponseEntity<GitHubUser[]>(gitHubUsers, HttpStatus.CREATED);
    }  	
 }
